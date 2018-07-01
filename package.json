@@ -1,0 +1,36 @@
+{
+  "name": "cosmic-algolia-extension-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "eslint . --ext .js,.jsx",
+    "eslint:watch": "esw . --ext .js,.jsx --watch",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisoverstreet/cosmic-algolia-extension-app.git"
+  },
+  "author": "Chris Overstreet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisoverstreet/cosmic-algolia-extension-app/issues"
+  },
+  "homepage": "https://github.com/chrisoverstreet/cosmic-algolia-extension-app#readme",
+  "dependencies": {
+    "algoliasearch": "^3.29.0",
+    "body-parser": "^1.18.3",
+    "corser": "^2.0.1",
+    "cosmicjs": "^3.2.12",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-watch": "^4.0.0"
+  }
+}
