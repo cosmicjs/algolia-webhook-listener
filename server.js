@@ -69,7 +69,7 @@ server.post('/api/create', async (req, res) => {
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
     ]);
-
+    console.log(getKeysRes)
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
@@ -102,7 +102,7 @@ server.post('/api/edit', async (req, res) => {
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
     ]);
-
+    console.log(getKeysRes)
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
