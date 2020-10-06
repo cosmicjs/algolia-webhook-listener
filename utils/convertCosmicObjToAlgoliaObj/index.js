@@ -7,6 +7,10 @@ const parseRadioButtons = require('./parseRadioButtons');
 const parseSelectDropdown = require('./parseSelectDropdown');
 const parsePlainTextArea = require('./parsePlainTextArea');
 const parseText = require('./parseText');
+const parseSwitch = require('./parseSwitch');
+const parseNumber = require('./parseNumber');
+const parseCheckBoxes = require('./parseCheckBoxes');
+const parseMarkdown = require('./parseMarkdown');
 
 module.exports = (cosmicObject) => {
   const {
@@ -55,6 +59,18 @@ module.exports = (cosmicObject) => {
         break;
       case 'objects':
         algoliaObject[metafield.key] = parseObjects(metafield);
+        break;
+      case 'switch':
+        algoliaObject[metafield.key] = parseSwitch(metafield);
+        break;
+      case 'number':
+        algoliaObject[metafield.key] = parseNumber(metafield);
+        break;
+      case 'check-boxes':
+        algoliaObject[metafield.key] = parseCheckBoxes(metafield);
+        break;
+      case 'markdown':
+        algoliaObject[metafield.key] = parseMarkdown(metafield);
         break;
       default:
         if (process.env.NODE_ENV !== 'production') {
