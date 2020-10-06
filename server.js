@@ -55,6 +55,7 @@ server.post('/api/removeBucketSlug/:id', async (req, res) => {
 server.post('/api/create', async (req, res) => {
   try {
     const { data } = req.body;
+    const { read_key } = req.query.read_key;
     const { bucket, type_slug } = data;
 
     const algoliaObject = convertCosmicObjToAlgoliaObj(data);
@@ -65,8 +66,8 @@ server.post('/api/create', async (req, res) => {
     // Fetch algolia application id & admin api key
     const projectBucket = Cosmic.bucket({ slug: projectBucketSlug });
     const getKeysRes = await Promise.all([
-      projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
-      projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
+      projectBucket.getObject({ slug: 'algolia-info-application-id', read_key }).catch(() => undefined),
+      projectBucket.getObject({ slug: 'algolia-info-admin-api-key', read_key }).catch(() => undefined),
     ]);
 
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
@@ -88,6 +89,7 @@ server.post('/api/edit', async (req, res) => {
   try {
     const { data } = req.body;
     const { bucket, type_slug } = data;
+    const { read_key } = req.query.read_key;
 
     const algoliaObject = convertCosmicObjToAlgoliaObj(data);
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
@@ -97,8 +99,8 @@ server.post('/api/edit', async (req, res) => {
     // Fetch algolia application id & admin api key
     const projectBucket = Cosmic.bucket({ slug: projectBucketSlug });
     const getKeysRes = await Promise.all([
-      projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
-      projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
+      projectBucket.getObject({ slug: 'algolia-info-application-id', read_key }).catch(() => undefined),
+      projectBucket.getObject({ slug: 'algolia-info-admin-api-key', read_key }).catch(() => undefined),
     ]);
 
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
