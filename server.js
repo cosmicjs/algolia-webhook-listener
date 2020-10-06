@@ -55,7 +55,7 @@ server.post('/api/removeBucketSlug/:id', async (req, res) => {
 server.post('/api/create', async (req, res) => {
   try {
     const { data } = req.body;
-    const { read_key } = req.query.read_key;
+    const { read_key } = req.query;
     const { bucket, type_slug } = data;
 
     const algoliaObject = convertCosmicObjToAlgoliaObj(data);
@@ -69,7 +69,6 @@ server.post('/api/create', async (req, res) => {
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
     ]);
-    console.log(getKeysRes)
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
@@ -89,7 +88,7 @@ server.post('/api/edit', async (req, res) => {
   try {
     const { data } = req.body;
     const { bucket, type_slug } = data;
-    const { read_key } = req.query.read_key;
+    const { read_key } = req.query;
 
     const algoliaObject = convertCosmicObjToAlgoliaObj(data);
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
@@ -102,7 +101,6 @@ server.post('/api/edit', async (req, res) => {
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
     ]);
-    console.log(projectBucketSlug, read_key)
     const applicationId = getKeysRes[0] && getKeysRes[0].object && getKeysRes[0].object.content;
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
