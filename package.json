@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrisoverstreet/cosmic-algolia-extension-app.git"
+    "url": "git+https://github.com/cosmicjs/algolia-webhook-listener.git"
   },
   "author": "Chris Overstreet",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chrisoverstreet/cosmic-algolia-extension-app/issues"
+    "url": "https://github.com/cosmicjs/algolia-webhook-listener/issues"
   },
-  "homepage": "https://github.com/chrisoverstreet/cosmic-algolia-extension-app#readme",
+  "homepage": "https://github.com/cosmicjs/algolia-webhook-listener#readme",
   "dependencies": {
     "algoliasearch": "^3.29.0",
     "body-parser": "^1.18.3",
