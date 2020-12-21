@@ -122,7 +122,7 @@ server.post('/api/edit', async (req, res) => {
 server.post('/api/delete', async (req, res) => {
   try {
     const { data } = req.body;
-    const { bucket } = req.query;
+    const { bucket, read_key } = req.query;
     const ids = data;
 
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
@@ -130,7 +130,10 @@ server.post('/api/delete', async (req, res) => {
     const projectBucketSlug = bucketSlugRes.object.content;
 
     // Fetch algolia application id & admin api key
-    const projectBucket = Cosmic.bucket({ slug: projectBucketSlug });
+    const projectBucket = Cosmic.bucket({
+      slug: projectBucketSlug,
+      read_key: read_key
+    });
     const getKeysRes = await Promise.all([
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
