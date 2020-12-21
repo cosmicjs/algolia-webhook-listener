@@ -129,6 +129,7 @@ server.post('/api/delete', async (req, res) => {
       type_slug,
     } = data;
 
+    const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
 
