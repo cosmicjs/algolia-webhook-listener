@@ -150,7 +150,7 @@ server.post('/api/delete', async (req, res) => {
     await index.waitTask(taskID);
     res.status(200).send();
   } catch (e) {
-    console.log(data)
+    console.log(req.body)
     console.error(e); // eslint-disable-line no-console
     res.status(200).send();
   }
