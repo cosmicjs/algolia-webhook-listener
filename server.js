@@ -122,7 +122,7 @@ server.post('/api/edit', async (req, res) => {
 server.post('/api/delete', async (req, res) => {
   try {
     const { data } = req.body;
-
+    const { bucket } = req.query;
     const ids = data;
 
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
