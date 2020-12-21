@@ -123,11 +123,7 @@ server.post('/api/delete', async (req, res) => {
   try {
     const { data } = req.body;
 
-    const {
-      _id,
-      bucket,
-      type_slug,
-    } = data;
+    const ids = data;
 
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
@@ -145,7 +141,7 @@ server.post('/api/delete', async (req, res) => {
 
     const client = algoliasearch(applicationId, adminApiKey);
     const index = client.initIndex(type_slug);
-    const addRes = await index.deleteObject(_id);
+    const addRes = await index.deleteObjects(ids);
     const { taskID } = addRes;
     await index.waitTask(taskID);
     res.status(200).send();
