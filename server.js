@@ -97,14 +97,10 @@ server.post('/api/edit', async (req, res) => {
     const projectBucketSlug = bucketSlugRes.object.content;
 
     // Fetch algolia application id & admin api key
-<<<<<<< HEAD
     const projectBucket = Cosmic.bucket({
       slug: projectBucketSlug,
       read_key: read_key
     });
-=======
-    const projectBucket = Cosmic.bucket({ slug: projectBucketSlug, read_key: read_key });
->>>>>>> a36f77175bcb7bad4838d6432c7f0f3a46164207
     const getKeysRes = await Promise.all([
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
