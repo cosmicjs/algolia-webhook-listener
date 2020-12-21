@@ -143,8 +143,8 @@ server.post('/api/delete', async (req, res) => {
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
     const client = algoliasearch(applicationId, adminApiKey);
-    const types = types.split(',')
-    for (type of types) {
+    const types_array = types.split(',')
+    for (type of types_array) {
       const index = client.initIndex(type);
       const addRes = await index.deleteObjects(ids);
       const { taskID } = addRes;
