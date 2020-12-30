@@ -96,6 +96,7 @@ server.post('/api/edit', async (req, res) => {
     } else {
       algoliaObjects = [convertCosmicObjToAlgoliaObj(data)];
     }
+    console.log(algoliaObjects)
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
