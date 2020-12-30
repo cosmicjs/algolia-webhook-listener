@@ -88,15 +88,16 @@ server.post('/api/edit', async (req, res) => {
   try {
     const { data } = req.body;
     const { read_key } = req.query;
-    const { bucket, type_slug } = data;
+    let { bucket, type_slug } = data;
     // Map objects for unpublished
     let algoliaObjects = [];
     if (Array.isArray(data)) {
       algoliaObjects = data.map(object => { return convertCosmicObjToAlgoliaObj(object) });
+      bucket = data[0].bucket;
+      type_slug = data[0].type_slug;
     } else {
       algoliaObjects = [convertCosmicObjToAlgoliaObj(data)];
     }
-    console.log(algoliaObjects)
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
