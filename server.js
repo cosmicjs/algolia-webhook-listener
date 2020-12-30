@@ -89,8 +89,13 @@ server.post('/api/edit', async (req, res) => {
     const { data } = req.body;
     const { read_key } = req.query;
     const { bucket, type_slug } = data;
-
-    const algoliaObject = convertCosmicObjToAlgoliaObj(data);
+    // Map objects for unpublished
+    let algoliaObjects = [];
+    if (Array.isArray(data)) {
+      algoliaObjects = data.map(object => { return convertCosmicObjToAlgoliaObj(object) });
+    } else {
+      algoliaObjects = [convertCosmicObjToAlgoliaObj(data)];
+    }
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
@@ -109,9 +114,11 @@ server.post('/api/edit', async (req, res) => {
 
     const client = algoliasearch(applicationId, adminApiKey);
     const index = client.initIndex(type_slug);
-    const addRes = await index.addObject(algoliaObject);
-    const { taskID } = addRes;
-    await index.waitTask(taskID);
+    for (let algoliaObject of algoliaObjects) {
+      const addRes = await index.addObject(algoliaObject);
+      const { taskID } = addRes;
+      await index.waitTask(taskID); 
+    }
     res.status(200).send();
   } catch (e) {
     console.error(e); // eslint-disable-line no-console
@@ -125,8 +132,12 @@ server.post('/api/delete', async (req, res) => {
     const { bucket, read_key, types } = req.query;
     let ids = data;
     // Map ids for unpublished
-    if (type === 'object.edited.unpublished')
-      ids = data.map(item => item._id)
+    if (type === 'object.edited.unpublished') {
+      if (Array.isArray(data))
+        ids = data.map(item => item._id)
+      else
+        ids = [data._id]
+    }
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
