@@ -92,7 +92,9 @@ server.post('/api/edit', async (req, res) => {
     // Map objects for unpublished
     let algoliaObjects = [];
     if (Array.isArray(data)) {
-      algoliaObjects = data.map(object => { return convertCosmicObjToAlgoliaObj(object) });
+      for(object of data) {
+        algoliaObjects.push(convertCosmicObjToAlgoliaObj(object));
+      }
       bucket = data[0].bucket;
       type_slug = data[0].type_slug;
     } else {
