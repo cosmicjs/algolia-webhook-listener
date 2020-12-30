@@ -121,10 +121,12 @@ server.post('/api/edit', async (req, res) => {
 
 server.post('/api/delete', async (req, res) => {
   try {
-    const { data } = req.body;
+    const { data, type } = req.body;
     const { bucket, read_key, types } = req.query;
-    const ids = data;
-
+    let ids = data;
+    // Map ids for unpublished
+    if (type === 'object.edited.unpublished')
+      ids = data.map(item => item._id)
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
     const projectBucketSlug = bucketSlugRes.object.content;
@@ -143,9 +145,9 @@ server.post('/api/delete', async (req, res) => {
     const adminApiKey = getKeysRes[1] && getKeysRes[1].object && getKeysRes[1].object.content;
 
     const client = algoliasearch(applicationId, adminApiKey);
-    const types_array = types.split(',')
-    for (type of types_array) {
-      const index = client.initIndex(type);
+    const types_array = types.split(',');
+    for (let object_type of types_array) {
+      const index = client.initIndex(object_type);
       const addRes = await index.deleteObjects(ids);
       const { taskID } = addRes;
       await index.waitTask(taskID);
