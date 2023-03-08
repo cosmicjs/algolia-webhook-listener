@@ -137,8 +137,7 @@ server.post('/api/delete', async (req, res) => {
     let ids = data;
     // Map ids for unpublished
     if (type === 'object.edited.unpublished') {
-      if (Array.isArray(data)) {ids = data.map(item => item._id)};
-      else {ids = [data._id]};
+      if (Array.isArray(data)) { ids = data.map(item => item._id); } else { ids = [data._id]; }
     }
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
@@ -178,6 +177,3 @@ server.listen(port, (err) => {
   // eslint-disable-next-line no-console
   console.log(`√ Ready at http://localhost:${port}`);
 });
-
-// Export the Express API
-module.exports = server;
