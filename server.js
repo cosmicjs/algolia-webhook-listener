@@ -64,7 +64,7 @@ server.post('/api/create', async (req, res) => {
     const projectBucketSlug = bucketSlugRes.object.content;
 
     // Fetch algolia application id & admin api key
-    const projectBucket = Cosmic.bucket({ slug: projectBucketSlug, read_key: read_key });
+    const projectBucket = Cosmic.bucket({ slug: projectBucketSlug, read_key });
     const getKeysRes = await Promise.all([
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
       projectBucket.getObject({ slug: 'algolia-info-admin-api-key' }).catch(() => undefined),
@@ -92,7 +92,7 @@ server.post('/api/edit', async (req, res) => {
     // Map objects for unpublished
     let algoliaObjects = [];
     if (Array.isArray(data)) {
-      for(object of data) {
+      for (object of data) {
         algoliaObjects.push(convertCosmicObjToAlgoliaObj(object));
       }
       bucket = data[0].bucket;
@@ -107,7 +107,7 @@ server.post('/api/edit', async (req, res) => {
     // Fetch algolia application id & admin api key
     const projectBucket = Cosmic.bucket({
       slug: projectBucketSlug,
-      read_key: read_key
+      read_key,
     });
     const getKeysRes = await Promise.all([
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
@@ -118,10 +118,10 @@ server.post('/api/edit', async (req, res) => {
 
     const client = algoliasearch(applicationId, adminApiKey);
     const index = client.initIndex(type_slug);
-    for (let algoliaObject of algoliaObjects) {
+    for (const algoliaObject of algoliaObjects) {
       const addRes = await index.addObject(algoliaObject);
       const { taskID } = addRes;
-      await index.waitTask(taskID); 
+      await index.waitTask(taskID);
     }
     res.status(200).send();
   } catch (e) {
@@ -137,10 +137,8 @@ server.post('/api/delete', async (req, res) => {
     let ids = data;
     // Map ids for unpublished
     if (type === 'object.edited.unpublished') {
-      if (Array.isArray(data))
-        ids = data.map(item => item._id)
-      else
-        ids = [data._id]
+      if (Array.isArray(data)) {ids = data.map(item => item._id)};
+      else {ids = [data._id]};
     }
     const searchBucket = Cosmic.bucket({ slug: 'algolia-search' });
     const bucketSlugRes = await searchBucket.getObject({ slug: bucket });
@@ -149,7 +147,7 @@ server.post('/api/delete', async (req, res) => {
     // Fetch algolia application id & admin api key
     const projectBucket = Cosmic.bucket({
       slug: projectBucketSlug,
-      read_key: read_key
+      read_key,
     });
     const getKeysRes = await Promise.all([
       projectBucket.getObject({ slug: 'algolia-info-application-id' }).catch(() => undefined),
@@ -161,7 +159,7 @@ server.post('/api/delete', async (req, res) => {
 
     const client = algoliasearch(applicationId, adminApiKey);
     const types_array = types.split(',');
-    for (let object_type of types_array) {
+    for (const object_type of types_array) {
       const index = client.initIndex(object_type);
       const addRes = await index.deleteObjects(ids);
       const { taskID } = addRes;
@@ -169,7 +167,7 @@ server.post('/api/delete', async (req, res) => {
     }
     res.status(200).send();
   } catch (e) {
-    console.log(req.body)
+    console.log(req.body);
     console.error(e); // eslint-disable-line no-console
     res.status(200).send();
   }
@@ -180,3 +178,6 @@ server.listen(port, (err) => {
   // eslint-disable-next-line no-console
   console.log(`√ Ready at http://localhost:${port}`);
 });
+
+// Export the Express API
+module.exports = server;
