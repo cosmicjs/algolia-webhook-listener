@@ -22,6 +22,7 @@ module.exports = (cosmicObject) => {
     slug,
     title,
     type_slug,
+    locale,
   } = cosmicObject;
   const algoliaObject = {
     objectID: _id,
@@ -31,6 +32,7 @@ module.exports = (cosmicObject) => {
     slug,
     title,
     type_slug,
+    locale,
   };
 
   metafields.forEach((metafield) => {
